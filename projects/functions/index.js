@@ -76,7 +76,7 @@ function returnCounter(number = 0) {
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
 function returnArgumentsArray(...n) {
-  return [...n];
+  return n;
 }
 
 /*
