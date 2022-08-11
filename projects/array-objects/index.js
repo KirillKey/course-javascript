@@ -63,12 +63,17 @@ function map(array, fn) {
    reduce([1, 2, 3], (all, current) => all + current) // 6
  */
 
-function reduce(array, fn, initial = 0) {
-  for (i = 0; i < array.length; i++) {
-    initial = fn(array[i], initial)
+function reduce(array, fn, initial) {
+  let prev = typeof initial !== "undefined" ? initial : array[0];
+
+  for (let i = initial ? 0 : 1; i < array.length; i++) {
+    prev = fn(array[i], prev)
   }
-  return initial;
+
+  return prev;
 }
+
+// reduce([1, 2, 3], (all, current) => all + current)
 
 /*
  Задание 4:
