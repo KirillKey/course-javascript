@@ -7,17 +7,19 @@
  Пример:
    forEach([1, 2, 3], (el) => console.log(el))
  */
-function forEach(array, fn) {
-  for (const el of array) {
-    fn(el);
-  }
-}
-// // 2 способа решения
+
+// // 1 способ решения (не доделан)
 // function forEach(array, fn) {
-//   for (let i = 0; i < array.length; i++) {
-//     fn(array[i])
+//   for (const el of array) {
+//     fn(el);
 //   }
 // }
+// // 2 способ решения
+function forEach(array, fn) {
+  for (let i = 0; i < array.length; i++) {
+    fn(array[i], i, array);
+  }
+}
 
 /*
  Задание 2:
@@ -28,20 +30,20 @@ function forEach(array, fn) {
  */
 function map(array, fn) {
   const arr = [];
-  array.forEach((el) => arr.push(fn(el)));
+  array.forEach((el, index, array) => arr.push(fn(el, index, array)));
   return arr;
 }
 
 // // 2 способ решения
 // function map(array, fn) {
 //   const arr = [];
-//   for (i = 0; i < array.length; i++) {
-//     arr.push(fn(array[i]))
-//   };
+//   for (let i = 0; i < array.length; i++) {
+//     arr.push(fn(array[i], i, array))
+//   }
 //   return arr;
 // }
 
-// // 3 способ решения
+// // 3 способ решения (не доделан)
 // function map(array, fn) {
 //   const arr = [];
 //   for (let el of array) {
@@ -62,7 +64,7 @@ function reduce(array, fn, initial) {
   let prev = typeof initial !== 'undefined' ? initial : array[0];
 
   for (let i = initial ? 0 : 1; i < array.length; i++) {
-    prev = fn(array[i], prev);
+    prev = fn(prev, array[i], i, array);
   }
 
   return prev;
