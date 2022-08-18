@@ -10,8 +10,11 @@
  Пример:
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
-function createDivWithText(text) {}
-
+function createDivWithText(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div;
+}
 /*
  Задание 2:
 
@@ -20,7 +23,11 @@ function createDivWithText(text) {}
  Пример:
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
-function prepend(what, where) {}
+function prepend(what, where) {
+  const firstEl = where;
+  const innerEl = what;
+  firstEl.prepend(innerEl);
+}
 
 /*
  Задание 3:
@@ -41,8 +48,28 @@ function prepend(what, where) {}
 
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
-function findAllPSiblings(where) {}
+function findAllPSiblings(where) {
+  const arr = [];
 
+  for (const el of where.children) {
+    if (el.nextElementSibling && el.nextElementSibling.tagName === 'P') {
+      arr.push(el);
+    }
+  }
+  return arr;
+}
+// способ номер 2
+// function findAllPSiblings(where) {
+//   const arr = [];
+
+//   for (let i = 0; i < where.children.length; i++) {
+//     if (where.children[i].nextElementSibling && where.children[i].nextElementSibling.tagName === "P") {
+//       arr.push(where.children[i])
+//     }
+//   };
+
+//   return arr;
+// }
 /*
  Задание 4:
 
@@ -63,7 +90,7 @@ function findAllPSiblings(where) {}
 function findError(where) {
   const result = [];
 
-  for (const child of where.childNodes) {
+  for (const child of where.children) {
     result.push(child.textContent);
   }
 
@@ -82,42 +109,97 @@ function findError(where) {
    После выполнения функции, дерево <div></div>привет<p></p>loftchool!!!
    должно быть преобразовано в <div></div><p></p>
  */
-function deleteTextNodes(where) {}
+function deleteTextNodes(where) {
+  for (const el of where.childNodes) {
+    if (el.nodeType === 3) {
+      el.remove();
+    }
+  }
+}
+// deleteTextNodes(document.body)
 
 /*
  Задание 6:
-
+ 
  Выполнить предыдущее задание с использование рекурсии - то есть необходимо заходить внутрь каждого дочернего элемента (углубляться в дерево)
-
+ 
  Будьте внимательны при удалении узлов, т.к. можно получить неожиданное поведение при переборе узлов
-
+ 
  Пример:
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
- */
-function deleteTextNodesRecursive(where) {}
+   */
+function deleteTextNodesRecursive(where) {
+  for (let i = 0; i < where.childNodes.length; i++) {
+    const el = where.childNodes[i];
+
+    if (el.nodeType === 3) {
+      el.remove();
+      i--;
+    } else {
+      deleteTextNodesRecursive(el);
+    }
+  }
+}
+// deleteTextNodesRecursive(document.body)
 
 /*
- Задание 7 *:
+Задание 7 *:
 
- Необходимо собрать статистику по всем узлам внутри элемента переданного в параметре root и вернуть ее в виде объекта
- Статистика должна содержать:
- - количество текстовых узлов
- - количество элементов каждого класса
- - количество элементов каждого тега
- Для работы с классами рекомендуется использовать classList
- Постарайтесь не создавать глобальных переменных
+Необходимо собрать статистику по всем узлам внутри элемента переданного в параметре root и вернуть ее в виде объекта
+Статистика должна содержать:
+- количество текстовых узлов
+- количество элементов каждого класса
+- количество элементов каждого тега
+Для работы с классами рекомендуется использовать classList
+Постарайтесь не создавать глобальных переменных
 
- Пример:
-   Для дерева <div class="some-class-1"><b>привет!</b> <b class="some-class-1 some-class-2">loftschool</b></div>
-   должен быть возвращен такой объект:
-   {
-     tags: { DIV: 1, B: 2},
-     classes: { "some-class-1": 2, "some-class-2": 1 },
-     texts: 3
-   }
- */
-function collectDOMStat(root) {}
+Пример:
+Для дерева <div class="some-class-1"><b>привет!</b> <b class="some-class-1 some-class-2">loftschool</b></div>
+должен быть возвращен такой объект:
+{
+  tags: { DIV: 1, B: 2},
+  classes: { "some-class-1": 2, "some-class-2": 1 },
+  texts: 3
+    }
+    */
+
+//  ещё не выполнено; не доделано
+// function collectDOMStat(root) { }
+
+function collectDOMStat(root) {
+  const obj = {
+    tags: {},
+    classes: {},
+    texts: 0,
+  };
+  function scan(root) {
+    for (let i = 0; i < root.childNodes.length; i++) {
+      const el = root.childNodes[i];
+
+      if (el.nodeType === 3) {
+        obj.texts++;
+      } else if (el.nodeType === 1) {
+        if (el.tagName in obj.tags) {
+          obj.tags[el.tagName]++;
+        } else {
+          obj.tags[el.tagName] = 1;
+        }
+        for (const className of [el.classList]) {
+          if (className in obj.classes) {
+            obj.classes[className]++;
+          } else {
+            obj.classes[className] = 1;
+          }
+        }
+        scan(el);
+      }
+    }
+  }
+  scan(root);
+  return obj;
+}
+// collectDOMStat(document.querySelector("div"))
 
 /*
  Задание 8 *:
