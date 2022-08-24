@@ -7,8 +7,10 @@
 
  Пример:
    addListener('click', document.querySelector('a'), () => console.log('...')) // должна добавить указанный обработчик кликов на указанный элемент
- */
-function addListener(eventName, target, fn) {}
+   */
+function addListener(eventName, target, fn) {
+  target.addEventListener(eventName, fn);
+}
 
 /*
  Задание 2:
@@ -17,8 +19,10 @@ function addListener(eventName, target, fn) {}
 
  Пример:
    removeListener('click', document.querySelector('a'), someHandler) // должна удалить указанный обработчик кликов на указанный элемент
- */
-function removeListener(eventName, target, fn) {}
+   */
+function removeListener(eventName, target, fn) {
+  target.removeEventListener(eventName, fn);
+}
 
 /*
  Задание 3:
@@ -28,7 +32,9 @@ function removeListener(eventName, target, fn) {}
  Пример:
    skipDefault('click', document.querySelector('a')) // после вызова функции, клики на указанную ссылку не должны приводить к переходу на другую страницу
  */
-function skipDefault(eventName, target) {}
+function skipDefault(eventName, target) {
+  target.addEventListener(eventName, (e) => e.preventDefault());
+}
 
 /*
  Задание 4:
@@ -38,7 +44,9 @@ function skipDefault(eventName, target) {}
  Пример:
    emulateClick(document.querySelector('a')) // для указанного элемента должно быть симулировано события click
  */
-function emulateClick(target) {}
+function emulateClick(target) {
+  target.click();
+}
 
 /*
  Задание 6:
@@ -48,18 +56,43 @@ function emulateClick(target) {}
 
  Пример:
    delegate(document.body, () => console.log('кликнули на button')) // добавит такой обработчик кликов для body, который будет вызывать указанную функцию только если кликнули на кнопку (элемент с тегом button)
- */
-function delegate(target, fn) {}
+   */
+function delegate(target, fn) {
+  target.addEventListener('click', (event) => {
+    if (event.target.closest('button')) {
+      fn();
+    }
+  });
+}
+// delegate(document.body, () => console.log('кликнули на button'))
 
 /*
- Задание 7:
+Задание 7:
 
- Функция должна добавить такой обработчик кликов к элементу target,
- который сработает только один раз и удалится (перестанет срабатывать для последующих кликов по указанному элементу)
+Функция должна добавить такой обработчик кликов к элементу target,
+который сработает только один раз и удалится (перестанет срабатывать для последующих кликов по указанному элементу)
 
- Пример:
-   once(document.querySelector('button'), () => console.log('обработчик выполнился!')) // добавит такой обработчик кликов для указанного элемента, который вызовется только один раз и затем удалится
- */
-function once(target, fn) {}
+Пример:
+once(document.querySelector('button'), () => console.log('обработчик выполнился!')) // добавит такой обработчик кликов для указанного элемента, который вызовется только один раз и затем удалится
+*/
+// // тоже верный вариант
+// function once(target, fn) {
+//   target.addEventListener('click', (event) => {
+//     if (event.target.closest('button')) {
+//       fn();
+//     }
+//   }, { "once": true })
+// }
+function once(target, fn) {
+  target.addEventListener('click', fnEv);
+
+  function fnEv(event) {
+    if (event.target.closest('button')) {
+      fn();
+      target.removeEventListener('click', fnEv);
+    }
+  }
+}
+// once(document.querySelector('button'), () => console.log('обработчик выполнился!'))
 
 export { addListener, removeListener, skipDefault, emulateClick, delegate, once };
