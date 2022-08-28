@@ -51,7 +51,16 @@ module.exports = {
         options: { cacheDirectory: true },
       },
       {
-        test: /projects\/.+\.html/,
+        // с данным кодом npm start не запускался =>
+        // test: /projects\/.+\.html/,
+        // use: [
+        //   { loader: './scripts/html-inject-loader.js' },
+        //   {
+        //     loader: 'raw-loader',
+        //   },
+        // ],
+        test: /\.html/,
+        include: [path.resolve(__dirname, 'projects')],
         use: [
           { loader: './scripts/html-inject-loader.js' },
           {
