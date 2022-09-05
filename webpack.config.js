@@ -61,6 +61,15 @@ module.exports = {
           },
         ],
       },
+      // {
+      //   test: /projects\/.+\.html/,
+      //   use: [
+      //     { loader: './scripts/html-inject-loader.js' },
+      //     {
+      //       loader: 'raw-loader',
+      //     },
+      //   ],
+      // },
       {
         test: /\.(jpe?g|png|gif|svg|eot|ttf|woff|woff2)$/i,
         loader: 'file-loader',
