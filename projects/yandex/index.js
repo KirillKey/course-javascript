@@ -4,6 +4,7 @@ import { formTemplate } from './templates';
 
 // const ymaps = window.ymaps;
 // document.addEventListener('DOMContentLoaded', () => ymaps.ready(init));
+
 let ymaps;
 document.addEventListener('DOMContentLoaded', () => {
   ymaps = window.ymaps;
