@@ -6,7 +6,7 @@ const { Server } = require('ws');
 function readBody(req) {
   return new Promise((resolve, reject) => {
     let dataRaw = '';
-    dataRaw
+    dataRaw;
 
     req.on('data', (chunk) => (dataRaw += chunk));
     req.on('error', reject);
@@ -106,4 +106,6 @@ function sendMessageFrom(connections, message, from, excludeSelf) {
   }
 }
 
-server.listen(8282);
+server.listen(8282, () => {
+  console.log('Сервер запущен на порту: 8282');
+});
